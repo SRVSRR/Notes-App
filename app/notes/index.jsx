@@ -13,6 +13,16 @@ const NoteScreen = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [newNote, setNewNote] = useState("");
 
+    // Add note
+    const addNote = () => {
+        if (newNote.trim() === "") return; // Prevent empty notes
+
+        setNotes((prevNotes) => [...prevNotes,{id:Date.now.toString(), text: newNote},]);
+
+        setNewNote(""); 
+        setModalVisible(false);
+    };
+
     return (<View style={styles.container}>
         <FlatList data={notes} keyExtractor={(item)=>item.id} renderItem={({item})=> (
             <View style={styles.noteItem}>
@@ -33,8 +43,8 @@ const NoteScreen = () => {
                             <Text style={styles.cancelButtonText}>Cancel</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.SaveButton} onPress={() => setModalVisible(false)}>
-                            <Text style={styles.cancelSaveText}>Save</Text>
+                        <TouchableOpacity style={styles.saveButton} onPress={addNote}>
+                            <Text style={styles.saveButtonText}>Save</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -76,7 +86,60 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
     },
-    
+    modalOverlay: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+        width: '80%',
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        padding: 20,
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        textAlign: 'center',
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 8,
+        padding: 10,
+        marginBottom: 15,
+        fontSize: 16,
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    cancelButton: {
+        flex: 1,
+        backgroundColor: '#ccc',
+        padding: 10,
+        borderRadius: 5,
+        marginRight: 10,
+        alignItems: 'center',
+    },
+    cancelButtonText: {
+        color: '#333',
+        fontSize: 16,
+    },
+    saveButton: {
+        flex: 1,
+        backgroundColor: '#007bff',
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+    },
+    saveButtonText: {
+        color: '#fff',
+        fontSize: 16,
+    },
+
 });
 
 export default NoteScreen;
